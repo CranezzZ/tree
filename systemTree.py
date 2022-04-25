@@ -9,7 +9,9 @@ Description: the definition of the requirement system tree
 email: crane@buaa.edu.cn
 '''
 
-from utils import get_tree_txt_lines
+from codecs import getreader
+from utils import get_tree_txt_lines, get_representation
+from transformers import BertTokenizer, AlbertModel
 
 class TreeNode():
     def __init__(self, init_text, depth=-1) -> None:
@@ -19,6 +21,7 @@ class TreeNode():
         self.isLeaf = False
         self.text = init_text
         self.depth = depth
+        
     
     def get_depth(self) -> int:
         return self.depth
@@ -35,6 +38,7 @@ class Tree():
     def __init__(self, args) -> None:
         self.root = None
         self.leafNodes = list()
+        self.leafRepres = list()
 
     def init_requirement_tree(self, args) -> TreeNode:
         linesList = get_tree_txt_lines(args)
@@ -75,3 +79,10 @@ class Tree():
                 stk.extend(cur.children)
         for item in self.leafNodes:
             print(item.text)
+        
+    def init_leaf_nodes_repre(self, model_path, tokenizer_path) -> None:
+        tokenizer = BertTokenizer.from_pretrained(tokenizer_path)
+        albert = AlbertModel.from_pretrained(model_path)
+        self.leafRepres = [get_representation(item.text, tokenizer, albert) for item in self.leafNodes]
+        print(len(self.leafNodes), len(self.leafRepres))
+        print(self.leafRepres)

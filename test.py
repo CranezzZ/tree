@@ -65,9 +65,6 @@ def cos_sim(vector_a, vector_b):
 def get_representation(s: str, tokenizer, model):
     inputs = tokenizer(s, return_tensors="pt")
     outputs = model(**inputs).pooler_output.squeeze(0).tolist()
-    #print(outputs.shape)
-    # outputs = albert(**inputs).last_hidden_state[:, 0, :].squeeze(0).tolist()
-    #outputs = [1]
     return outputs
 
 if __name__ == '__main__':

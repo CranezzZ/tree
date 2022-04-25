@@ -37,3 +37,8 @@ def get_ident(args, s: str) -> int:
         if c != args.special_symbol:
             break
     return i
+
+def get_representation(s: str, tokenizer, model):
+    inputs = tokenizer(s, return_tensors="pt")
+    outputs = model(**inputs).pooler_output.squeeze(0).tolist()
+    return outputs

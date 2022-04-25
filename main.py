@@ -21,6 +21,7 @@ def debug(args):
     rootNode = systemTree.init_requirement_tree(args)
     #rootNode.dfs()
     systemTree.set_leaf_nodes()
+    systemTree.init_leaf_nodes_repre(args.model_path, args.tokenizer_path)
 
 if __name__ == '__main__':
     args = get_args()
